@@ -13,4 +13,4 @@ esx_GlassHeroes is a straight-forward mechanic script that lets you pay an NPC m
 - [ox_lib](https://github.com/your-repo/ox_lib)
 
 ## Video Showcase
- - [video]https://youtu.be/6kqTGYbzOnA
+https://youtu.be/6kqTGYbzOnA
