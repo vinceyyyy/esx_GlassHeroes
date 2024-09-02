@@ -21,3 +21,7 @@ esx_GlassHeroes is a straight-forward mechanic script that lets you pay an NPC m
 ![glassheroes3](https://github.com/user-attachments/assets/a50a942a-a245-4476-bc11-2acab8eac476)
 ![5000cost](https://github.com/user-attachments/assets/08accb71-8765-43b8-854e-8cf36f719620)
 ![glassheroes4](https://github.com/user-attachments/assets/fe10d28c-8aa3-4cf1-b3a8-16009b0b794e)
+
+## Installation
+- Add to resources folder
+- Add `ensure esx_GlassHeroes` to your config file
