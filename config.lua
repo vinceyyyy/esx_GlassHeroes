@@ -24,8 +24,15 @@ Config.RepairTime = {
     {addedTime = 10000}
 }
 
+Config.Features = {
+    {requireNoMechanics = true,                 --Make NPC unusable if there are a certain
+    amountOfMechanics = 1,                      --amount of mechanics online, standard: false | 1
+    errorMessage = "Sorry, we're too busy at the moment. Come back later."}         
+}
+
 Config.Other = {
     {spawnRadius = 110.0},          --General radius to determine how close player is
     {infoBarRadius = 1.5},          --The radius for the info bar to pop up, standard: 1.5
     {fetchVehiclesRadius = 30.0}    --The radius to fetch nearby vehicles from, standard: 30.0
 }
+

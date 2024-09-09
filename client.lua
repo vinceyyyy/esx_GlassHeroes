@@ -14,6 +14,7 @@ local targetVehicle = nil
 
 local playerBankMoney = 0
 local playerCash = 0
+local mechanicsOnline = 0
 
 RegisterNetEvent('esx_GlassHeroes:getPlayerBankMoney')
 AddEventHandler('esx_GlassHeroes:getPlayerBankMoney', function(bankMoney)
@@ -58,13 +59,18 @@ AddEventHandler('onResourceStop', function(resourceName)
         return
     end
 
-    TriggerServerEvent('npc:spawn')
+    TriggerServerEvent('npc:despawn')
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() == resourceName then
         TriggerServerEvent('npc:spawn')
     end
+end)
+
+RegisterNetEvent('esx_GlassHeroes:getMechanicsOnline')
+AddEventHandler('esx_GlassHeroes:getMechanicsOnline', function(amount)
+    mechanicsOnline = amount
 end)
 
 --Event for opening the pay menu/submenu
@@ -211,32 +217,38 @@ Citizen.CreateThread(function()
     AddTextComponentString('Glass Heroes')
     EndTextCommandSetBlipName(blip)
 
-    TriggerServerEvent('npc:spawn')
+    TriggerServerEvent('npc:spawn') 
+    
 end)
 
 --Thread for alert if player is near NPC
 Citizen.CreateThread(function()
-        while true do
-            if not isNPCworking and not IsPedInAnyVehicle(PlayerPedId(), true) then
-                if displayInfobar then
-                    showInfobar('Press ~INPUT_CONTEXT~ to choose a vehicle to repair.')
+    while true do
+        if not isNPCworking and not IsPedInAnyVehicle(PlayerPedId(), true) then
+            if displayInfobar then
+                showInfobar('Press ~INPUT_CONTEXT~ to choose a vehicle to repair.')
 
-                    if IsControlJustReleased(1, 38) then
+                if IsControlJustReleased(1, 38) then
+                    if Config.Features[1].requireNoMechanics then
+                        if mechanicsOnline < Config.Features[1].amountOfMechanics then
+                            openDialogMenu()
+                        else
+                            ESX.ShowNotification(Config.Features[1].errorMessage, 'error', 3000)
+                        end
+                    else
                         openDialogMenu()
                     end
-
-                    Citizen.Wait(1)
-                else
-                    Citizen.Wait(500)
                 end
+
+                Citizen.Wait(1)
             else
-                displayInfobar = false
                 Citizen.Wait(500)
             end
-                
-             
-        end
-    
+        else
+            displayInfobar = false
+            Citizen.Wait(500)
+        end       
+    end
 end)
 
 --Thread to check if NPC is near vehicle that is to be repaired
@@ -266,20 +278,35 @@ Citizen.CreateThread(function()
     while true do
         if hasFinishedWork and continueLoop then
             local pedCoords = GetEntityCoords(ped)
-            local distance = Vdist(pedCoords.x, pedCoords.y, pedCoords.z, Config.Peds[1].pedCoords)
+            
+            local distance = Vdist(pedCoords.x, pedCoords.y, pedCoords.z, currentPed.pedCoords)
 
             if distance <= 3.0 then
-                TaskGoStraightToCoord(ped, Config.Peds[1].pedCoords, 2.0, -1, Config.Peds[1].pedHeading, 0.0)
+                TaskGoStraightToCoord(ped, Config.Peds[1].pedCoords, 2.0, -1, currentPed.pedCoords, 0.0)
                 isNPCworking = false
                 hasFinishedWork = false
                 Citizen.Wait(5000)
                 addPedProperties(ped)
                 continueLoop = false
             end
+            
             Citizen.Wait(1000)
         else
             Citizen.Wait(5000)
             continueLoop = true
         end
+    end
+end)
+
+--Thread to check for mechanics
+Citizen.CreateThread(function()
+    while true do
+        if Config.Features[1].requireNoMechanics then
+            TriggerServerEvent('esx_GlassHeroes:requestMechanicsOnline')
+            Citizen.Wait(3000)
+        else
+            Citizen.Wait(5000)
+        end
+        
     end
 end)
