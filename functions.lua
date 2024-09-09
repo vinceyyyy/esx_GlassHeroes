@@ -16,7 +16,6 @@ function createPed()
         addPedProperties(ped)
         SetModelAsNoLongerNeeded(pedHash)
     end
-
 end
 
 function removePed()
@@ -243,7 +242,6 @@ function pedRepairVehicle(targetVeh)
     
     end
 
-    
     ClearPedTasks(ped)
     TriggerEvent('npc:isNPCworkingFalse')
     goBackToCoords()
