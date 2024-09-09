@@ -4,6 +4,7 @@ esx_GlassHeroes is a straight-forward mechanic script that lets you pay an NPC m
 ## Features
 - **NPC based car repair:** Players can interact with an NPC and pay them to repair your car.
 - **Dynamic price calculation:** Price for reparation will get calculated based on vehicle damage.
+- **Mechanic check:** Checks for online mechanics and dismisses player if at least one is online.
 - **ESX integration:** For the management of the player's money.
 - **ox_lib integration:** For an appealing and elegant UI.
 - **Customizable:** Config file to tweak prices and repair times to your liking.
