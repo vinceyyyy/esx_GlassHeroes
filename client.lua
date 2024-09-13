@@ -279,10 +279,10 @@ Citizen.CreateThread(function()
         if hasFinishedWork and continueLoop then
             local pedCoords = GetEntityCoords(ped)
             
-            local distance = Vdist(pedCoords.x, pedCoords.y, pedCoords.z, currentPed.pedCoords)
+            local distance = Vdist(pedCoords.x, pedCoords.y, pedCoords.z, Config.Peds[1].pedCoords)
 
             if distance <= 3.0 then
-                TaskGoStraightToCoord(ped, Config.Peds[1].pedCoords, 2.0, -1, currentPed.pedCoords, 0.0)
+                TaskGoStraightToCoord(ped, Config.Peds[1].pedCoords, 2.0, -1, Config.Peds[1].pedHeading, 0.0)
                 isNPCworking = false
                 hasFinishedWork = false
                 Citizen.Wait(5000)
