@@ -17,7 +17,7 @@ esx_GlassHeroes is a straight-forward mechanic script that lets you pay an NPC m
 [Join now!](https://discord.gg//APVWnAV475)
 
 ## Video Showcase
-- [Showcase](https://youtu.be/6kqTGYbzOnA)
+[Showcase](https://youtu.be/6kqTGYbzOnA)
 
 ## Pictures
 ![glassheroes](https://github.com/user-attachments/assets/537a1659-f307-42da-af98-188f7f20d17a)
