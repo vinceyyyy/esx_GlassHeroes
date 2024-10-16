@@ -1,5 +1,6 @@
 local pedHash = Config.Peds[1].pedModel
 local currentRepairCost = 0
+local ped = nil
 
 function createPed()
     if not DoesEntityExist(ped) then
@@ -15,6 +16,8 @@ function createPed()
         ped = CreatePed(4, pedHash, pedVector3, pedHeading, true, false)
         addPedProperties(ped)
         SetModelAsNoLongerNeeded(pedHash)
+
+        TriggerEvent('esx_GlassHeroes:getPedHandle', ped)
     end
 end
 

@@ -7,17 +7,15 @@ esx_GlassHeroes is a straight-forward mechanic script that lets you pay an NPC m
 - **Mechanic check:** Checks for online mechanics and dismisses player if at least one is online.
 - **ESX integration:** For the management of the player's money.
 - **ox_lib integration:** For an appealing and elegant UI.
+- **ox_target integration:** To interact with the NPC.
 - **Customizable:** Config file to tweak prices and repair times to your liking.
 
 ## Requirements
 - [ES_Extended](https://github.com/esx-framework/esx_core)
-- [ox_lib](https://github.com/your-repo/ox_lib)
-
-## Discord
-[Join now!](https://discord.gg//APVWnAV475)
+- [ox_lib](https://github.com/overextended/ox_lib)
 
 ## Video Showcase
-[Showcase](https://youtu.be/6kqTGYbzOnA)
+- [Showcase](https://youtu.be/6kqTGYbzOnA)
 
 ## Pictures
 ![glassheroes](https://github.com/user-attachments/assets/537a1659-f307-42da-af98-188f7f20d17a)
