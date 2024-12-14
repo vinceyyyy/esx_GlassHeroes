@@ -3,17 +3,16 @@ game 'gta5'
 lua54 'yes'
 
 client_scripts {
-    'client.lua',
-    'functions.lua',
+    'client/client.lua',
+    'client/clientFunctions.lua'
 }
 
 server_scripts {
-    'server.lua',
-    'functions.lua'
+    'server/server.lua',
 }
 
 shared_scripts {
     '@es_extended/imports.lua',
     'config.lua',
-    '@ox_lib/init.lua'
+    '@ox_lib/init.lua',
 } 
