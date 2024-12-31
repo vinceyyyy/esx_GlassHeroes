@@ -1,21 +1,37 @@
-local pedHash = Config.Peds[1].pedModel
+local createdPeds = {}
 
-function createPed()
-    local pedVector3 = Config.Peds[1].pedCoords
-    local pedHeading = Config.Peds[1].pedHeading
-    
-    RequestModel(pedHash)
-    while not HasModelLoaded(pedHash) do
-        Wait(50)
+function createPeds()
+
+    for i, ped in ipairs(Config.Peds) do
+        local pedHash = Config.Peds[i].pedModel
+        local pedVector3 = Config.Peds[i].pedCoords
+        local pedHeading = Config.Peds[i].pedHeading
+
+        RequestModel(pedHash)
+        while not HasModelLoaded(pedHash) do
+            Wait(50)
+        end    
+        
+        local ped = CreatePed(4, pedHash, pedVector3, pedHeading, false, false) 
+        FreezeEntityPosition(ped, true)
+        addClientPedProperties(ped)
+        table.insert(createdPeds, ped)
     end
+    return createdPeds
+end
 
-    local ped = CreatePed(4, pedHash, pedVector3, pedHeading, false, false)
-    TriggerEvent('esx_GlasshHeroes:updatePedStateBag', ped)
+function addBlips()
+    for i, ped in ipairs(Config.Peds) do
+        local blip = AddBlipForCoord(Config.Peds[i].pedCoords)
+        SetBlipSprite(blip, Config.mapBlip[1].blipIcon)
+        SetBlipColour(blip, Config.mapBlip[2].blipColour)
+        SetBlipAsShortRange(blip, true)
+        SetBlipScale(blip, Config.mapBlip[3].blipScale)
 
-    FreezeEntityPosition(ped, true)
-    addClientPedProperties(ped)
-
-    return ped
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString('Glass Heroes')
+        EndTextCommandSetBlipName(blip)
+    end
 end
 
 function addClientPedProperties(ped)
@@ -236,7 +252,11 @@ function pedRepairVehicle(targetVeh, ped)
 
     ClearPedTasks(ped)
     TriggerEvent('esx_GlassHeroes:NPCfinishedWork', 'isNPCworking', false)
-    goBackToCoords(ped)
+    local pedIndex = getPedIndex(ped)
+
+    local coords = Config.Peds[pedIndex].pedCoords
+
+    goBackToCoords(ped, coords)
     
 end
 
@@ -252,8 +272,8 @@ function fixVehicle(vehicle)
     SetVehicleFixed(vehicle)
 end
 
-function goBackToCoords(ped)
-    TaskGoToCoordAnyMeans(ped, Config.Peds[1].pedCoords, 1.0, 0, false, 0, 0)
+function goBackToCoords(ped, coords)
+    TaskGoToCoordAnyMeans(ped, coords, 1.0, 0, false, 0, 0)
     removePedProperties(ped)
     TriggerEvent('esx_GlassHeroes:NPCfinishedWork', 'hasFinishedWork', true)
 end
@@ -267,4 +287,15 @@ function determineRepairTime()
     local repairTime = ((currentRepairCost / maxRepairCost) * (maxRepairTime - minRepairTime)) + addedTime
 
     return math.floor(repairTime)
+end
+
+function getPedIndex(ped)
+    local index
+    for i, currentPed in ipairs(createdPeds) do
+        if ped == currentPed then
+            index = i
+        end
+    end
+
+    return index
 end

@@ -1,7 +1,7 @@
 Config = {}
 
-Config.Peds = {
-    {pedModel = GetHashKey('mp_m_waremech_01'), pedCoords = vector3(-229.74, -1377.23, 31.25-1), pedHeading = 212.60},
+Config.Peds = { --Add new mechanics
+    {pedModel = GetHashKey('mp_m_waremech_01'), pedCoords = vector3(-229.74, -1377.23, 31.25-1), pedHeading = 212.60}
 }
 
 Config.mapBlip = {

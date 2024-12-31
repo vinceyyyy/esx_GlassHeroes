@@ -8,6 +8,7 @@ local hasFinishedWork = false
 local continueLoop = true
 
 local ped = nil
+local createdPeds = nil
 local targetVehicle = nil
 
 -- Events
@@ -41,10 +42,8 @@ RegisterNetEvent('esx_GlassHeroes:NPCfinishedWork', function(type, bool)
         else
             hasFinishedWork = false
         end
-        
     end
 end)
-
 
 -- Event for opening the pay menu/submenu
 RegisterNetEvent('mechanic:payMenu', function(vehicleData)
@@ -155,40 +154,25 @@ RegisterNetEvent('mechanic:payMenu', function(vehicleData)
     lib.showContext('pay_menu')
 end)
 
--- Ox Target
-exports.ox_target:addGlobalPed({
-    name = 'npc_talk',
-    coords = Config.Peds[1].pedCoords,
-    radius = 5,
-    drawSprite = true,
-    label = 'Talk',
-    canInteract = function(entity, distance, coords, name, bone) 
-        if entity == ped and not isNPCworking and not hasFinishedWork then
-            return true
-        else
-            return false
-        end
-        
-    end,
-    icon = 'fa-solid fa-comment',
-    iconColor = 'white',
-    distance = 2.0,
-    event = 'esx_GlassHeroes:openDialogMenu', 
-    
-})
-
--- Thread for blip and spawning NPC
+-- Thread for blip, spawning NPC and ox_target
 Citizen.CreateThread(function()
-    local blip = AddBlipForCoord(Config.Peds[1].pedCoords)
-    SetBlipSprite(blip, Config.mapBlip[1].blipIcon)
-    SetBlipColour(blip, Config.mapBlip[2].blipColour)
-    SetBlipAsShortRange(blip, true)
-    SetBlipScale(blip, Config.mapBlip[3].blipScale)
+    addBlips()
+    createdPeds = createPeds()
 
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentString('Glass Heroes')
-    EndTextCommandSetBlipName(blip)
-    ped = createPed()
+    exports.ox_target:addLocalEntity(createdPeds, {
+        name = 'npc_talk',
+        radius = 5,
+        drawSprite = true,
+        label = 'Talk',
+        icon = 'fa-solid fa-comment',
+        iconColor = 'white',
+        distance = 2.0,
+        onSelect = function(data)
+            ped = data.entity
+            TriggerEvent('esx_GlassHeroes:openDialogMenu')
+        end, 
+    
+    })    
 end)
 
 -- Thread to check if NPC is near vehicle that is to be repaired
@@ -217,14 +201,17 @@ end)
 Citizen.CreateThread(function()
     while true do
         if hasFinishedWork and continueLoop then
+
             local pedCoords = GetEntityCoords(ped)
-            
-            local distance = Vdist(pedCoords.x, pedCoords.y, pedCoords.z, Config.Peds[1].pedCoords)
+            local index = getPedIndex(ped)
+            local distance = Vdist(pedCoords.x, pedCoords.y, pedCoords.z, Config.Peds[index].pedCoords)
 
             if distance <= 3.0 then
-                TaskGoStraightToCoord(ped, Config.Peds[1].pedCoords, 2.0, -1, Config.Peds[1].pedHeading, 0.0)
+                TaskGoStraightToCoord(ped, Config.Peds[index].pedCoords, 2.0, -1, Config.Peds[index].pedHeading, 0.0)
+
                 isNPCworking = false
                 hasFinishedWork = false
+
                 Citizen.Wait(5000)
                 addClientPedProperties(ped)
                 continueLoop = false
