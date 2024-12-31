@@ -8,7 +8,7 @@ esx_GlassHeroes is a straight-forward mechanic script that lets you pay an NPC m
 - **ESX integration:** For the management of the player's money.
 - **ox_lib integration:** For an appealing and elegant UI.
 - **ox_target integration:** To interact with the NPC.
-- **Customizable:** Config file to tweak prices and repair times to your liking.
+- **Customizable:** Config file to tweak prices and repair times to your liking and add new mechanics to the map.
 
 ## Requirements
 - [ES_Extended](https://github.com/esx-framework/esx_core)
